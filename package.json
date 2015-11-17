@@ -1,0 +1,24 @@
+{
+  "name": "web-service",
+  "version": "1.0.0",
+  "description": "Server-side support for Vega web applications.",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/vega/web-service.git"
+  },
+  "author": {
+    "name": "Jeffrey Heer",
+    "url": "http://idl.cs.washington.edu"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "4.13.3"
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "license": "BSD-3-Clause"
+}
