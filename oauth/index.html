@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>Vega GitHub Authentication</title>
+    <script src="/lib/d3-request.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+var SERVICE_URL = 'https://vega-web-service.herokuapp.com/oauth';
+var code = params().code;
+var resp = {auth: true, token: null};
+
+if (code) {
+  d3_request.json(SERVICE_URL + '?code=' + code, function(error, data) {
+    if (!error) { resp.token = data.token; } else { resp.error = error; }
+    send(resp);
+  });
+} else {
+  resp.error = 'Missing OAuth code.';
+  send(resp);
+}
+
+function send(resp) {
+  // send message to parent window, then close
+  window.opener.postMessage(resp, window.location.origin);
+  window.close();
+}
+
+function params() {
+  var qs = window.location.search,
+      n = qs.length, p = {};
+  if (n) {
+    qs.slice(1, (qs[n-1]==='/' ? -1 : n))
+      .split('&').forEach(function(s) {
+        var nv = s.split('=').map(decodeURIComponent);
+        p[nv[0]] = nv[1];
+      });
+  }
+  return p;
+}
+    </script>
+  </body>
+</html>
