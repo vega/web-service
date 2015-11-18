@@ -8,11 +8,14 @@
   <body>
     <script type="text/javascript">
 var SERVICE_URL = 'https://vega-web-service.herokuapp.com/oauth';
-var code = params().code;
+var p = params();
 var resp = {auth: true, token: null};
 
-if (code) {
-  request.json(SERVICE_URL + '?code=' + code, function(error, data) {
+if (p.code) {
+  var uri = SERVICE_URL + '?code=' + p.code;
+  if (p.state) uri += '&state=' + encodeURIComponent(p.state);
+
+  request.json(uri, function(error, data) {
     if (!error) { resp.token = data.token; } else { resp.error = error; }
     send(resp);
   });
