@@ -13,7 +13,6 @@ app.use(function(req, res, next) {
 // -- GitHub OAuth Support -----
 var CLIENT_ID = process.env.GITHUB_CLIENT;
 var CLIENT_SECRET = process.env.GITHUB_SECRET;
-var GH_TOKEN = 'access_token';
 
 function GH_OPTIONS(data) {
   return {
@@ -40,23 +39,24 @@ app.get('/oauth', function(request, response) {
 
   // get github access code
   var code = request.query.code;
-
   if (!code) {
     onError('Missing OAuth code.');
     return;
   }
 
-  var postData = querystring.stringify({
+  var params = {
     client_id:     CLIENT_ID,
     client_secret: CLIENT_SECRET,
     code:          code
-  });
+  };
+  if (request.query.state) params.state = request.query.state;
 
+  var postData = querystring.stringify(params);
   requestJSON(GH_OPTIONS(postData), postData, function(error, data) {
     if (error) {
       onError(error);
     } else {
-      response.json({token: data.json[GH_TOKEN]});
+      response.json(data);
     }
   });
 });
