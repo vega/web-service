@@ -17,7 +17,7 @@ document.getElementById('load')
 function load() {
   // setup listener for events from auth window
   function listener(evt) {
-    if (!evt.data.auth) return;
+    if (!evt.data.oauth) return;
     if (evt.origin === window.location.origin) {
       document.getElementById('result').innerText = JSON.stringify(evt.data);
       window.removeEventListener('message', listener);
