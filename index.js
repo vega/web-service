@@ -31,18 +31,12 @@ function GH_OPTIONS(data) {
 app.get('/oauth', function(request, response) {
   response.type('json');
   function onError(msg) {
-    response.json({
-      token: null,
-      error: String(msg)
-    });
+    response.json({error: msg+''});
   }
 
   // get github access code
   var code = request.query.code;
-  if (!code) {
-    onError('Missing OAuth code.');
-    return;
-  }
+  if (!code) { onError('Missing OAuth code.'); return; }
 
   var params = {
     client_id:     CLIENT_ID,
