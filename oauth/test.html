@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>Vega GitHub Authentication Test</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+var URL = 'https://github.com/login/oauth/authorize';
+var p = params();
+
+// setup listener for events from auth window
+function listener(evt) {
+  if (!evt.data.auth) return;
+  if (evt.origin === window.location.origin) {
+    console.log('TOKEN', evt.data.token);
+    window.removeEventListener('message', listener);
+  }
+}
+window.addEventListener('message', listener, false);
+
+// open auth window
+var url = URL + '?scope=gist&client_id=' + p.client_id;
+window.open(url);
+
+function params() {
+  var qs = window.location.search,
+      n = qs.length, p = {};
+  if (n) {
+    qs.slice(1, (qs[n-1]==='/' ? -1 : n))
+      .split('&').forEach(function(s) {
+        var nv = s.split('=').map(decodeURIComponent);
+        p[nv[0]] = nv[1];
+      });
+  }
+  return p;
+}
+    </script>
+  </body>
+</html>
