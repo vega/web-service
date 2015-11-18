@@ -50,6 +50,7 @@ app.get('/oauth', function(request, response) {
     if (error) {
       onError(error);
     } else {
+      if (params.state) data.state = params.state;
       response.json(data);
     }
   });
