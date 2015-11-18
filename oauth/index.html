@@ -9,14 +9,19 @@
     <script type="text/javascript">
 var SERVICE_URL = 'https://vega-web-service.herokuapp.com/oauth';
 var p = params();
-var resp = {auth: true, token: null};
+var resp = {oauth: true};
 
 if (p.code) {
   var uri = SERVICE_URL + '?code=' + p.code;
   if (p.state) uri += '&state=' + encodeURIComponent(p.state);
 
   request.json(uri, function(error, data) {
-    if (!error) { resp.token = data.token; } else { resp.error = error; }
+    if (!error) {
+      resp = data;
+      resp.oauth = true;
+    } else {
+      resp.error = error;
+    }
     send(resp);
   });
 } else {
@@ -24,13 +29,13 @@ if (p.code) {
   send(resp);
 }
 
-function send(resp) {
+function send(data) {
   if (window.opener) {
     // send message to parent window, then close
-    window.opener.postMessage(resp, window.location.origin);
+    window.opener.postMessage(data, window.location.origin);
     window.close();
   } else {
-    document.body.innerText = JSON.stringify(resp);
+    document.body.innerText = JSON.stringify(data);
   }
 }
 
