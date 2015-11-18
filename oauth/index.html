@@ -12,7 +12,7 @@ var code = params().code;
 var resp = {auth: true, token: null};
 
 if (code) {
-  d3_request.json(SERVICE_URL + '?code=' + code, function(error, data) {
+  request.json(SERVICE_URL + '?code=' + code, function(error, data) {
     if (!error) { resp.token = data.token; } else { resp.error = error; }
     send(resp);
   });
