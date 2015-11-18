@@ -19,7 +19,7 @@ function load() {
   function listener(evt) {
     if (!evt.data.auth) return;
     if (evt.origin === window.location.origin) {
-      document.getElementById('result').innerText = evt.data.token;
+      document.getElementById('result').innerText = JSON.stringify(evt.data);
       window.removeEventListener('message', listener);
     }
   }
@@ -27,6 +27,7 @@ function load() {
 
   // open auth window
   var url = URL + '?scope=gist&client_id=' + p.client_id;
+  if (p.state) url += '&state=' + encodeURIComponent(p.state);
   window.open(url);
 }
 
