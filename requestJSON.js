@@ -19,11 +19,7 @@ module.exports = function(options, data, callback) {
 
     response.on('end', function() {
       try {
-        var obj = JSON.parse(output);
-        callback(null, {
-          code: response.statusCode,
-          json: obj
-        });
+        callback(null, JSON.parse(output));
       } catch (err) {
         callback(err, null);
       }
